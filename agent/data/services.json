@@ -1,0 +1,75 @@
+{
+  "services": {
+    "payment-service": {
+      "environment": "production",
+      "status": "degraded",
+      "tasks_running": 4,
+      "tasks_desired": 8,
+      "cpu_utilization": "92%",
+      "memory_utilization": "96%",
+      "error_rate": "14.2%",
+      "recent_events": [
+        "OutOfMemoryError: Java heap space during checkout processing",
+        "Connection pool exhausted for aurora-pg-cluster.internal",
+        "High latency alert: p99 response time > 4200ms"
+      ]
+    },
+    "auth-gateway": {
+      "environment": "production",
+      "status": "healthy",
+      "tasks_running": 6,
+      "tasks_desired": 6,
+      "cpu_utilization": "28%",
+      "memory_utilization": "42%",
+      "error_rate": "0.01%",
+      "recent_events": [
+        "JWKS key rotation completed successfully",
+        "TLS handshake latency within normal bounds (<15ms)"
+      ]
+    },
+    "order-processor": {
+      "environment": "production",
+      "status": "healthy",
+      "tasks_running": 3,
+      "tasks_desired": 3,
+      "cpu_utilization": "44%",
+      "memory_utilization": "55%",
+      "error_rate": "0.05%",
+      "recent_events": [
+        "Processed 14,200 events from SQS queue order-events-fifo",
+        "No dead-letter queue spillover detected"
+      ]
+    },
+    "redis-cache": {
+      "environment": "production",
+      "status": "warning",
+      "cluster_nodes": 3,
+      "memory_utilization": "89%",
+      "eviction_rate": "1200 keys/sec",
+      "recent_events": [
+        "High memory fragmentation ratio detected (1.68)",
+        "Keyspace miss rate elevated on payment session keys"
+      ]
+    }
+  },
+  "cloudwatch_logs": {
+    "payment-service": [
+      "[2026-10-18T19:42:01Z] ERROR PaymentProcessor: Database connection timeout to aurora-pg-cluster:5432 after 5000ms",
+      "[2026-10-18T19:42:15Z] FATAL ContainerWatchdog: Container memory 1980MB exceeded limit 2048MB. SIGKILL issued.",
+      "[2026-10-18T19:42:30Z] WARN ECSCluster: Task ecs-task-88f12 exited with code 137 (OOMKilled). Respawning...",
+      "[2026-10-18T19:43:02Z] ERROR StripeGateway: Request idempotency conflict for transaction tx_99281a"
+    ],
+    "auth-gateway": [
+      "[2026-10-18T19:40:00Z] INFO AuthGateway: Token validation throughput steady at 850 req/sec",
+      "[2026-10-18T19:41:22Z] INFO AuthGateway: Healthy keepalive response from VPC Endpoint"
+    ],
+    "order-processor": [
+      "[2026-10-18T19:39:10Z] INFO SQSListener: Polled 10 messages from queue order-events-fifo",
+      "[2026-10-18T19:39:12Z] INFO OrderDB: Inserted order ord_98721 into DynamoDB table Orders"
+    ],
+    "redis-cache": [
+      "[2026-10-18T19:41:00Z] WARN CacheNode01: Maxmemory limit reached; evicting volatile-lru keys",
+      "[2026-10-18T19:42:11Z] WARN CacheNode02: Replication lag spiked to 240ms on read replica"
+    ]
+  }
+}
